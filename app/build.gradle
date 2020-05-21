@@ -1,0 +1,83 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
+apply from: "$project.rootDir/secret.gradle"
+
+android {
+    compileSdkVersion versions.compileSdk
+    buildToolsVersion versions.buildTools
+    defaultConfig {
+        applicationId "com.rygital.currencies"
+        minSdkVersion versions.minSdk
+        targetSdkVersion versions.targetSdk
+        versionCode versions.code
+        versionName versions.name
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunnerArguments clearPackageData: 'true'
+    }
+
+    testOptions {
+        execution 'ANDROIDX_TEST_ORCHESTRATOR'
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    signingConfigs {
+        debug {
+            keyAlias debugSignConfigs.keyAlias
+            keyPassword debugSignConfigs.keyPassword
+            storeFile file(debugSignConfigs.storeFile)
+            storePassword debugSignConfigs.storePassword
+        }
+        release {
+            keyAlias releaseSignConfigs.keyAlias
+            keyPassword releaseSignConfigs.keyPassword
+            storeFile file(releaseSignConfigs.storeFile)
+            storePassword releaseSignConfigs.storePassword
+        }
+    }
+
+    buildTypes {
+        debug {
+            minifyEnabled false
+            signingConfig signingConfigs.debug
+        }
+        release {
+            shrinkResources true
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt')
+            proguardFiles fileTree('../proguard').asList().toArray()
+            signingConfig signingConfigs.release
+        }
+    }
+}
+
+dependencies {
+    implementation project(':core')
+    implementation project(':core-ui')
+    implementation project(':core-network-api')
+    implementation project(':core-network-impl')
+    implementation project(':feature-currency-list-api')
+    implementation project(':feature-currency-list-impl')
+
+
+    implementation libraries.androidxDesign
+    implementation libraries.androidxCardView
+    implementation libraries.androidxConstraintLayout
+
+    implementation libraries.dagger
+    kapt libraries.daggerCompiler
+
+    debugImplementation libraries.leakCanary
+
+    testImplementation libraries.junit
+    testImplementation libraries.mockito
+    androidTestImplementation libraries.espressoCore
+    androidTestImplementation libraries.espressoContrib
+    androidTestImplementation libraries.uiAutomator
+    androidTestImplementation libraries.androidTestRules
+}

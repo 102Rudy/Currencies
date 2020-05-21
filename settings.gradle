@@ -1,0 +1,5 @@
+rootProject.name = 'Currencies'
+include ':app'
+include ':core'
+include ':core-network-api'
+include ':core-network-impl'

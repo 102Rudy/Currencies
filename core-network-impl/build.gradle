@@ -1,0 +1,15 @@
+apply from: "${rootProject.projectDir}/common.gradle"
+
+dependencies {
+    implementation project(':core-network-api')
+
+
+    implementation libraries.retrofit
+    implementation libraries.dagger
+    kapt libraries.daggerCompiler
+
+    implementation libraries.retrofit
+    implementation libraries.retrofitConverterGson
+    implementation libraries.retrofitRxAdapter
+    implementation libraries.okHttpLogging
+}
