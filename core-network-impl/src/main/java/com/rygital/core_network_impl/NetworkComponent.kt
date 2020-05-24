@@ -2,19 +2,20 @@ package com.rygital.core_network_impl
 
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
+import com.rygital.core.scope.ApplicationScope
 import com.rygital.core_network_api.NetworkApi
-import dagger.BindsInstance
 import dagger.Component
 import dagger.Module
 import dagger.Provides
+import hu.akarnokd.rxjava3.retrofit.RxJava3CallAdapterFactory
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.CallAdapter
 import retrofit2.Converter
 import retrofit2.Retrofit
-import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 
+@ApplicationScope
 @Component(
     modules = [
         NetworkModule::class
@@ -23,12 +24,19 @@ import retrofit2.converter.gson.GsonConverterFactory
 interface NetworkComponent : NetworkApi {
     @Component.Factory
     interface Factory {
-        fun create(@BindsInstance endpointUrl: String): NetworkComponent
+        fun create(): NetworkComponent
     }
 }
 
 @Module
 internal class NetworkModule {
+
+    companion object {
+        private const val CURRENCY_ENDPOINT = "https://hiring.revolut.codes/api/android/"
+    }
+
+    @Provides
+    fun provideEndpoint(): String = CURRENCY_ENDPOINT
 
     @Provides
     fun provideGson(): Gson = GsonBuilder().create()
@@ -39,7 +47,7 @@ internal class NetworkModule {
 
     @Provides
     fun provideCallAdapterFactory(): CallAdapter.Factory =
-        RxJava2CallAdapterFactory.create()
+        RxJava3CallAdapterFactory.create()
 
     @Provides
     fun provideOkHttpClient(): OkHttpClient {
@@ -53,6 +61,7 @@ internal class NetworkModule {
     }
 
     @Provides
+    @ApplicationScope
     fun provideRetrofit(
         endpointUrl: String,
         converterFactory: Converter.Factory,

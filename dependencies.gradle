@@ -76,6 +76,7 @@ ext {
         retrofit                : "com.squareup.retrofit2:retrofit:$versions.retrofit",
         retrofitConverterGson   : "com.squareup.retrofit2:converter-gson:$versions.retrofit",
         retrofitRxAdapter       : "com.squareup.retrofit2:adapter-rxjava2:$versions.retrofit",
+        retrofitRx3Adapter      : "com.github.akarnokd:rxjava3-retrofit-adapter:3.0.0",
         okHttpLogging           : "com.squareup.okhttp3:logging-interceptor:$versions.okHttpLogging",
 
         // analytics

@@ -2,12 +2,14 @@ package com.rygital.currencies.di
 
 import com.rygital.core.BaseInjector
 import com.rygital.core.ComponentFactory
+import com.rygital.core.scope.ApplicationScope
 import com.rygital.currencies.ComponentFactoryImpl
 import com.rygital.currencies.CurrencyApplication
 import dagger.Binds
 import dagger.Component
 import dagger.Module
 
+@ApplicationScope
 @Component(
     modules = [
         ApplicationBindsModule::class
@@ -26,5 +28,6 @@ internal interface ApplicationComponent : BaseInjector<CurrencyApplication> {
 @Module
 internal interface ApplicationBindsModule {
     @Binds
+    @ApplicationScope
     fun bindComponentFactory(impl: ComponentFactoryImpl): ComponentFactory
 }
