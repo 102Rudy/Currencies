@@ -4,6 +4,7 @@ import androidx.recyclerview.widget.DiffUtil
 import com.rygital.core.rx.SchedulerProvider
 import com.rygital.core_ui.BasePresenterImpl
 import com.rygital.feature_currency_list_impl.domain.CurrencyInteractor
+import com.rygital.feature_currency_list_impl.domain.model.CurrencyRateModel
 import com.rygital.feature_currency_list_impl.presentation.viewdata.CurrencyViewData
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
@@ -22,14 +23,24 @@ internal class CurrencyListPresenterImpl @Inject constructor(
             .delay(1000, TimeUnit.MILLISECONDS)
             .repeat()
             .observeOn(schedulerProvider.computation())
-            .map { items ->
-                items.map {
-                    CurrencyViewData(
-                        it.code,
-                        "",
-                        it.rate.toString(),
-                        0
-                    )
+            .map { exchangeRates ->
+                val firstItem = CurrencyRateModel(exchangeRates.baseCurrency, 1.0)
+
+                mutableListOf<CurrencyViewData>().apply {
+                    add(CurrencyViewData(firstItem.code, "", firstItem.rate.toString(), 0))
+
+                    exchangeRates.rates.forEach { currencyRate ->
+                        if (currencyRate.code != firstItem.code) {
+                            val currencyViewData = CurrencyViewData(
+                                currencyRate.code,
+                                "",
+                                currencyRate.rate.toString(),
+                                0
+                            )
+
+                            add(currencyViewData)
+                        }
+                    }
                 }
             }
             .scan(initialListAndDiffResult) { prev, next ->
@@ -47,5 +58,11 @@ internal class CurrencyListPresenterImpl @Inject constructor(
                 { throwable -> throwable.printStackTrace() }
             )
         )
+    }
+
+    override fun selectItem(item: CurrencyViewData) {
+    }
+
+    override fun setRate(item: CurrencyViewData, newRate: String) {
     }
 }

@@ -11,4 +11,6 @@ internal interface CurrencyListView : MvpView {
 
 internal interface CurrencyListPresenter : BasePresenter<CurrencyListView> {
     fun startRatesUpdate()
+    fun selectItem(item: CurrencyViewData)
+    fun setRate(item: CurrencyViewData, newRate: String)
 }

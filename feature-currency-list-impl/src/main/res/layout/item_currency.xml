@@ -17,6 +17,7 @@
         tools:ignore="ContentDescription" />
 
     <TextView
+        style="@style/Widget.Text.Regular.Primary"
         android:id="@+id/tv_currency_code"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -25,6 +26,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
+        style="@style/Widget.Text.Regular.Secondary"
         android:id="@+id/tv_currency_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -32,12 +34,14 @@
         app:layout_constraintTop_toBottomOf="@id/tv_currency_code" />
 
     <EditText
-        android:id="@+id/tv_currency_rate"
+        style="@style/Widget.Text.Medium"
+        android:id="@+id/et_currency_rate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
         android:importantForAutofill="no"
         android:inputType="numberDecimal"
+        android:backgroundTint="@color/colorEditTextTint"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"

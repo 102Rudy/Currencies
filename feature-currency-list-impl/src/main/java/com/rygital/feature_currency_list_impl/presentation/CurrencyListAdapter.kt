@@ -5,8 +5,11 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.rygital.feature_currency_list_impl.databinding.ItemCurrencyBinding
 import com.rygital.feature_currency_list_impl.presentation.viewdata.CurrencyViewData
+import javax.inject.Inject
 
-internal class CurrencyListAdapter : RecyclerView.Adapter<CurrencyListAdapter.CurrencyHolder>() {
+internal class CurrencyListAdapter @Inject constructor(
+    private val presenter: CurrencyListPresenter
+) : RecyclerView.Adapter<CurrencyListAdapter.CurrencyHolder>() {
 
     private val items: MutableList<CurrencyViewData> = mutableListOf()
 

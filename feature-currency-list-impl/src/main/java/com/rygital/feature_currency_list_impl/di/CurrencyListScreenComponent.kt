@@ -11,7 +11,6 @@ import com.rygital.feature_currency_list_impl.data.CurrencyService
 import com.rygital.feature_currency_list_impl.domain.CurrencyInteractor
 import com.rygital.feature_currency_list_impl.domain.CurrencyInteractorImpl
 import com.rygital.feature_currency_list_impl.domain.CurrencyRepository
-import com.rygital.feature_currency_list_impl.presentation.CurrencyListAdapter
 import com.rygital.feature_currency_list_impl.presentation.CurrencyListFragment
 import com.rygital.feature_currency_list_impl.presentation.CurrencyListPresenter
 import com.rygital.feature_currency_list_impl.presentation.CurrencyListPresenterImpl
@@ -61,10 +60,6 @@ internal class CurrencyListScreenProvidesModule {
     @Provides
     fun provideCurrenciesService(retrofit: Retrofit): CurrencyService =
         retrofit.create(CurrencyService::class.java)
-
-    @Provides
-    fun provideAdapter(): CurrencyListAdapter =
-        CurrencyListAdapter()
 }
 
 @Module

@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.rygital.core_ui.BaseFragment
+import com.rygital.feature_currency_list_impl.R
 import com.rygital.feature_currency_list_impl.databinding.FragmentCurrencyListBinding
 import com.rygital.feature_currency_list_impl.di.CurrencyListScreenComponent
 import com.rygital.feature_currency_list_impl.presentation.viewdata.CurrencyViewData
@@ -33,6 +34,8 @@ internal class CurrencyListFragment : BaseFragment<CurrencyListPresenter, Curren
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        binding.toolbar.setTitle(R.string.title_rates)
 
         binding.rvCurrencyList.run {
             layoutManager = LinearLayoutManager(requireContext())
