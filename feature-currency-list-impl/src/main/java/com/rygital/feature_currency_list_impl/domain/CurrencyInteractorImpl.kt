@@ -1,5 +1,6 @@
 package com.rygital.feature_currency_list_impl.domain
 
+import androidx.annotation.VisibleForTesting
 import com.rygital.core.rx.SchedulerProvider
 import com.rygital.feature_currency_list_impl.domain.model.CurrencyRateModel
 import com.rygital.feature_currency_list_impl.domain.model.ExchangeRatesModel
@@ -11,7 +12,8 @@ internal class CurrencyInteractorImpl @Inject constructor(
     private val currencyRepository: CurrencyRepository
 ) : CurrencyInteractor {
 
-    private var exchangeRatesCache: ExchangeRatesModel? = null
+    @VisibleForTesting
+    var exchangeRatesCache: ExchangeRatesModel? = null
 
     override fun getRates(baseCurrency: String, value: Double): Single<ExchangeRatesModel> =
         currencyRepository.getLatestRates(baseCurrency)
@@ -28,25 +30,21 @@ internal class CurrencyInteractorImpl @Inject constructor(
             }
 
     override fun getRatesRelativeToBase(
-        baseCurrency: String,
+        newBaseCurrency: String,
         value: Double
     ): Single<ExchangeRatesModel> =
-        Single.fromCallable { exchangeRatesCache ?: getRates(baseCurrency).blockingGet() }
+        Single.fromCallable { exchangeRatesCache ?: getRates(newBaseCurrency, value).blockingGet() }
             .subscribeOn(schedulerProvider.io())
             .observeOn(schedulerProvider.computation())
             .map { exchangeRates ->
-                if (value == 1.0) {
-                    return@map exchangeRates
-                }
-
                 val rates =
-                    if (baseCurrency == exchangeRates.baseCurrency) {
+                    if (newBaseCurrency == exchangeRates.baseCurrency) {
                         convertWithSameBase(exchangeRates, value)
                     } else {
-                        convertWithAnotherBase(exchangeRates, baseCurrency, value)
+                        convertWithAnotherBase(exchangeRates, newBaseCurrency, value)
                     }
 
-                ExchangeRatesModel(baseCurrency, rates)
+                ExchangeRatesModel(newBaseCurrency, rates)
             }
 
     private fun convertWithSameBase(
@@ -58,14 +56,21 @@ internal class CurrencyInteractorImpl @Inject constructor(
 
     private fun convertWithAnotherBase(
         exchangeRates: ExchangeRatesModel,
-        baseCurrency: String,
+        newBaseCurrency: String,
         value: Double
     ): List<CurrencyRateModel> {
-        val baseCurrencyRate = exchangeRates.rates
-            .first { it.code == baseCurrency }
+        val newBaseCurrencyRate = exchangeRates.rates
+            .first { it.code == newBaseCurrency }
             .rate
 
+        val oldBase = exchangeRates.baseCurrency
+        val rateModelToAdd = CurrencyRateModel(oldBase, (1 / newBaseCurrencyRate) * value)
+
         return exchangeRates.rates
-            .map { CurrencyRateModel(it.code, (it.rate / baseCurrencyRate) * value) }
+            .filterNot { it.code == newBaseCurrency }
+            .map { CurrencyRateModel(it.code, (it.rate / newBaseCurrencyRate) * value) }
+            .toMutableList()
+            .apply { add(rateModelToAdd) }
+            .sortedBy { it.code }
     }
 }

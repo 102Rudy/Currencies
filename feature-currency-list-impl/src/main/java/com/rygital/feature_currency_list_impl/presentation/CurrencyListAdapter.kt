@@ -1,6 +1,7 @@
 package com.rygital.feature_currency_list_impl.presentation
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.rygital.feature_currency_list_impl.databinding.ItemCurrencyBinding
@@ -45,20 +46,45 @@ internal class CurrencyListAdapter @Inject constructor(
         items.addAll(newItems)
     }
 
-    class CurrencyHolder(
+    inner class CurrencyHolder(
         private val binding: ItemCurrencyBinding
-    ) : RecyclerView.ViewHolder(binding.root) {
+    ) : RecyclerView.ViewHolder(binding.root), View.OnClickListener {
+
+        private var currencyViewData: CurrencyViewData? = null
+
+        init {
+            binding.root.setOnClickListener(this)
+            binding.etCurrencyRate.setOnFocusChangeListener { view, hasFocus ->
+                if (hasFocus) {
+                    onClick(view)
+                }
+            }
+        }
 
         fun bind(item: CurrencyViewData) {
+            currencyViewData = item
+
             binding.tvCurrencyCode.text = item.code
-            binding.tvCurrencyRate.setText(item.rate)
+            binding.etCurrencyRate.setText(item.rate)
         }
 
         fun bind(item: CurrencyViewData, payloads: MutableList<Any>) {
+            currencyViewData = item
+
             (payloads.firstOrNull() as? Int?)?.let {
                 if (it == CurrencyViewData.PAYLOAD_RATE_CHANGED) {
-                    binding.tvCurrencyRate.setText(item.rate)
+                    binding.etCurrencyRate.setText(item.rate)
                 }
+            }
+        }
+
+        override fun onClick(view: View?) {
+            if (adapterPosition == RecyclerView.NO_POSITION) {
+                return
+            }
+
+            currencyViewData?.let {
+                presenter.selectItem(it)
             }
         }
     }
