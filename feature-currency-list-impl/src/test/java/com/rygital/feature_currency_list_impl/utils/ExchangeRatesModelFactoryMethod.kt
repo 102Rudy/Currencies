@@ -11,7 +11,7 @@ internal fun createExchangeRatesModel(
     valueMultiplier: Double = 1.0
 ): ExchangeRatesModel =
     ExchangeRatesModel(
-        baseCurrency,
+        CurrencyRateModel(baseCurrency, 1.0),
         listOf(
             CurrencyRateModel("AUD", 1.0 * valueMultiplier),
             CurrencyRateModel("BGN", 2.0 * valueMultiplier),
@@ -25,7 +25,7 @@ class CreateExchangeRatesModelTest {
     fun `createExchangeRatesModel returns expected results`() {
         assertEquals(
             ExchangeRatesModel(
-                "BGN",
+                CurrencyRateModel("BGN", 1.0),
                 listOf(
                     CurrencyRateModel("AUD", 1.0),
                     CurrencyRateModel("BRL", 3.0),
@@ -39,7 +39,7 @@ class CreateExchangeRatesModelTest {
 
         assertEquals(
             ExchangeRatesModel(
-                "EUR",
+                CurrencyRateModel("EUR", 1.0),
                 listOf(
                     CurrencyRateModel("AUD", 1.0),
                     CurrencyRateModel("BGN", 2.0),
@@ -53,7 +53,7 @@ class CreateExchangeRatesModelTest {
 
         assertEquals(
             ExchangeRatesModel(
-                "EUR",
+                CurrencyRateModel("EUR", 1.0),
                 listOf(
                     CurrencyRateModel("AUD", 3.5),
                     CurrencyRateModel("BGN", 7.0),
@@ -68,7 +68,7 @@ class CreateExchangeRatesModelTest {
 
         assertNotEquals(
             ExchangeRatesModel(
-                "EUR",
+                CurrencyRateModel("EUR", 1.0),
                 listOf(
                     CurrencyRateModel("AUD", 1.0),
                     CurrencyRateModel("BRL", 3.0),
@@ -82,7 +82,7 @@ class CreateExchangeRatesModelTest {
 
         assertNotEquals(
             ExchangeRatesModel(
-                "EUR",
+                CurrencyRateModel("EUR", 1.0),
                 listOf(
                     CurrencyRateModel("AUD", 1.0),
                     CurrencyRateModel("BRL", 3.0),

@@ -20,7 +20,7 @@ internal class CurrencyListPresenterImpl @Inject constructor(
 
     companion object {
         private const val DEFAULT_CURRENCY_CODE = "EUR"
-        private const val RATES_UPDATE_INTERVAL_MILLIS = 1000L
+        private const val RATES_UPDATE_INTERVAL_MILLIS = 10000L
         private const val CURRENCY_RATE_FORMAT = "%.2f"
     }
 
@@ -39,7 +39,10 @@ internal class CurrencyListPresenterImpl @Inject constructor(
             .subscribeOn(schedulerProvider.io())
             .observeOn(schedulerProvider.computation())
             .map { exchangeRates ->
-                val firstItem = CurrencyRateModel(exchangeRates.baseCurrency, 1.0)
+                val firstItem = CurrencyRateModel(
+                    exchangeRates.baseCurrencyRate.code,
+                    exchangeRates.baseCurrencyRate.rate
+                )
 
                 mutableListOf<CurrencyViewData>().apply {
                     val firstViewData = CurrencyViewData(

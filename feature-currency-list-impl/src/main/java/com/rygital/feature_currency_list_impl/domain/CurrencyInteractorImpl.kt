@@ -26,7 +26,7 @@ internal class CurrencyInteractorImpl @Inject constructor(
                 }
 
                 val rates = convertWithSameBase(exchangeRates, value)
-                ExchangeRatesModel(exchangeRates.baseCurrency, rates)
+                ExchangeRatesModel(CurrencyRateModel(baseCurrency, value), rates)
             }
 
     override fun getRatesRelativeToBase(
@@ -37,14 +37,16 @@ internal class CurrencyInteractorImpl @Inject constructor(
             .subscribeOn(schedulerProvider.io())
             .observeOn(schedulerProvider.computation())
             .map { exchangeRates ->
+                val baseCurrencyRate = CurrencyRateModel(newBaseCurrency, value)
+
                 val rates =
-                    if (newBaseCurrency == exchangeRates.baseCurrency) {
+                    if (newBaseCurrency == exchangeRates.baseCurrencyRate.code) {
                         convertWithSameBase(exchangeRates, value)
                     } else {
                         convertWithAnotherBase(exchangeRates, newBaseCurrency, value)
                     }
 
-                ExchangeRatesModel(newBaseCurrency, rates)
+                ExchangeRatesModel(baseCurrencyRate, rates)
             }
 
     private fun convertWithSameBase(
@@ -63,7 +65,7 @@ internal class CurrencyInteractorImpl @Inject constructor(
             .first { it.code == newBaseCurrency }
             .rate
 
-        val oldBase = exchangeRates.baseCurrency
+        val oldBase = exchangeRates.baseCurrencyRate.code
         val rateModelToAdd = CurrencyRateModel(oldBase, (1 / newBaseCurrencyRate) * value)
 
         return exchangeRates.rates

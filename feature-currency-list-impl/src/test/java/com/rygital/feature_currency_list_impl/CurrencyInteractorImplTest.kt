@@ -85,7 +85,7 @@ class CurrencyInteractorImplTest {
     }
 
     @Test
-    fun `getRatesRelativeToBase for BGN and value = 1 with base EUR`() {
+    fun `getRatesRelativeToBase for BGN and value = 1 with base BRL`() {
         // mock
         currencyInteractor.exchangeRatesCache =
             createExchangeRatesModel(
@@ -100,7 +100,7 @@ class CurrencyInteractorImplTest {
 
         // verify
         val assertValue = ExchangeRatesModel(
-            "BGN",
+            CurrencyRateModel("BGN", 1.0),
             listOf(
                 CurrencyRateModel("AUD", 0.5),
                 CurrencyRateModel("BRL", 0.5),

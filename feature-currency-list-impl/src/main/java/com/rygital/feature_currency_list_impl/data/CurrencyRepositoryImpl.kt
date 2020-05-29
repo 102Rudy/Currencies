@@ -13,9 +13,11 @@ internal class CurrencyRepositoryImpl @Inject constructor(
     override fun getLatestRates(baseCurrency: String): Single<ExchangeRatesModel> =
         currencyService.getLatestRates(baseCurrency)
             .map { currencyLatestResponse ->
+                val baseCurrencyRate = CurrencyRateModel(currencyLatestResponse.baseCurrency, 1.0)
+
                 val rates = currencyLatestResponse.rates.entries
                     .map { CurrencyRateModel(it.key, it.value) }
 
-                ExchangeRatesModel(currencyLatestResponse.baseCurrency, rates.take(6))
+                ExchangeRatesModel(baseCurrencyRate, rates.take(6))
             }
 }
