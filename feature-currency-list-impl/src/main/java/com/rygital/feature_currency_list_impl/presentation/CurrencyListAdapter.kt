@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.rygital.feature_currency_list_impl.databinding.ItemCurrencyBinding
+import com.rygital.feature_currency_list_impl.presentation.utils.SimpleTextWatcher
 import com.rygital.feature_currency_list_impl.presentation.viewdata.CurrencyViewData
 import javax.inject.Inject
 
@@ -59,6 +60,27 @@ internal class CurrencyListAdapter @Inject constructor(
                     onClick(view)
                 }
             }
+
+            binding.etCurrencyRate.addTextChangedListener(
+                object : SimpleTextWatcher() {
+                    override fun onTextChanged(
+                        s: CharSequence?,
+                        start: Int,
+                        before: Int,
+                        count: Int
+                    ) {
+                        if (!binding.etCurrencyRate.isFocused ||
+                            adapterPosition == RecyclerView.NO_POSITION ||
+                            s == null
+                        ) {
+                            return
+                        }
+
+                        currencyViewData?.let {
+                            presenter.setRate(it, s.toString())
+                        }
+                    }
+                })
         }
 
         fun bind(item: CurrencyViewData) {
@@ -69,6 +91,10 @@ internal class CurrencyListAdapter @Inject constructor(
         }
 
         fun bind(item: CurrencyViewData, payloads: MutableList<Any>) {
+            if (binding.etCurrencyRate.isFocused) {
+                return
+            }
+
             currencyViewData = item
 
             (payloads.firstOrNull() as? Int?)?.let {

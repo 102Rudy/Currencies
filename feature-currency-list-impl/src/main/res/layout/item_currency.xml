@@ -45,6 +45,7 @@
         android:importantForAutofill="no"
         android:inputType="numberDecimal"
         android:backgroundTint="@color/colorEditTextTint"
+        android:hint="@string/currency_rate_hint"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"

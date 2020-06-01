@@ -9,7 +9,6 @@ import com.rygital.feature_currency_list_impl.domain.model.ExchangeRatesModel
 import com.rygital.feature_currency_list_impl.presentation.viewdata.CurrencyViewData
 import io.reactivex.rxjava3.core.Flowable
 import io.reactivex.rxjava3.subjects.BehaviorSubject
-import timber.log.Timber
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
@@ -19,6 +18,9 @@ internal class CurrencyListPresenterImpl @Inject constructor(
 ) : BasePresenterImpl<CurrencyListView>(), CurrencyListPresenter {
 
     companion object {
+        private const val DEFAULT_CURRENCY_VALUE = 1.0
+        private const val ZERO_CURRENCY_VALUE = 0.0
+
         private const val DEFAULT_CURRENCY_CODE = "EUR"
         private const val RATES_UPDATE_INTERVAL_MILLIS = 10000L
         private const val CURRENCY_RATE_FORMAT = "%.2f"
@@ -27,7 +29,7 @@ internal class CurrencyListPresenterImpl @Inject constructor(
     private val exchangeRatesSubject: BehaviorSubject<ExchangeRatesModel> = BehaviorSubject.create()
 
     private var currentCurrencyCode = DEFAULT_CURRENCY_CODE
-    private var currentValue = 1.0
+    private var currentValue = DEFAULT_CURRENCY_VALUE
 
     override fun attachView(view: CurrencyListView) {
         super.attachView(view)
@@ -97,10 +99,25 @@ internal class CurrencyListPresenterImpl @Inject constructor(
     }
 
     override fun selectItem(item: CurrencyViewData) {
-        Timber.i("select $item")
         currentCurrencyCode = item.code
         currentValue = item.rate.toDouble()
 
+        updateRatesRelativeToCurrent()
+    }
+
+    override fun setRate(item: CurrencyViewData, newRate: String) {
+        currentCurrencyCode = item.code
+        currentValue =
+            if (newRate.isBlank()) {
+                ZERO_CURRENCY_VALUE
+            } else {
+                newRate.toDouble()
+            }
+
+        updateRatesRelativeToCurrent()
+    }
+
+    private fun updateRatesRelativeToCurrent() {
         addDisposable(
             currencyInteractor.getRatesRelativeToBase(currentCurrencyCode, currentValue)
                 .subscribeOn(schedulerProvider.io())
@@ -109,8 +126,5 @@ internal class CurrencyListPresenterImpl @Inject constructor(
                     { throwable -> throwable.printStackTrace() }
                 )
         )
-    }
-
-    override fun setRate(item: CurrencyViewData, newRate: String) {
     }
 }
