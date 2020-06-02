@@ -109,6 +109,8 @@ internal class CurrencyListAdapter @Inject constructor(
                 return
             }
 
+            binding.etCurrencyRate.requestFocus()
+
             currencyViewData?.let {
                 presenter.selectItem(it)
             }
