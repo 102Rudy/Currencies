@@ -72,7 +72,7 @@ internal class CurrencyListPresenterImpl @Inject constructor(
 
     override fun startRatesUpdate() {
         addDisposable(
-            Flowable.interval(RATES_UPDATE_INTERVAL_MILLIS, TimeUnit.MILLISECONDS)
+            Flowable.interval(0, RATES_UPDATE_INTERVAL_MILLIS, TimeUnit.MILLISECONDS)
                 .subscribeOn(schedulerProvider.io())
                 .flatMap {
                     currencyInteractor.getRates(currentCurrencyCode, currentValue).toFlowable()
