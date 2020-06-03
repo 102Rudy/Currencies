@@ -1,6 +1,6 @@
 apply from: "${rootProject.projectDir}/common.gradle"
 
-android.viewBinding.enabled = true
+android.buildFeatures.viewBinding = true
 
 dependencies {
     implementation project(':feature-currency-list-api')

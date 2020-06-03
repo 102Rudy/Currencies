@@ -21,7 +21,7 @@ class CurrencyApplication : Application(), ComponentFactoryHolder {
         }
 
         DaggerApplicationComponent.factory()
-            .create()
+            .create(applicationContext)
             .inject(this)
     }
 }

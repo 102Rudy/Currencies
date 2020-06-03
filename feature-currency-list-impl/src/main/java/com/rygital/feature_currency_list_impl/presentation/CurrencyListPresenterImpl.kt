@@ -14,7 +14,8 @@ import javax.inject.Inject
 
 internal class CurrencyListPresenterImpl @Inject constructor(
     private val schedulerProvider: SchedulerProvider,
-    private val currencyInteractor: CurrencyInteractor
+    private val currencyInteractor: CurrencyInteractor,
+    private val currencyViewDataConverter: CurrencyViewDataConverter
 ) : BasePresenterImpl<CurrencyListView>(), CurrencyListPresenter {
 
     companion object {
@@ -23,7 +24,6 @@ internal class CurrencyListPresenterImpl @Inject constructor(
 
         private const val DEFAULT_CURRENCY_CODE = "EUR"
         private const val RATES_UPDATE_INTERVAL_MILLIS = 10000L
-        private const val CURRENCY_RATE_FORMAT = "%.2f"
     }
 
     private val exchangeRatesSubject: BehaviorSubject<ExchangeRatesModel> = BehaviorSubject.create()
@@ -47,25 +47,11 @@ internal class CurrencyListPresenterImpl @Inject constructor(
                 )
 
                 mutableListOf<CurrencyViewData>().apply {
-                    val firstViewData = CurrencyViewData(
-                        firstItem.code,
-                        "",
-                        String.format(CURRENCY_RATE_FORMAT, firstItem.rate),
-                        0
-                    )
-
-                    add(firstViewData)
+                    add(currencyViewDataConverter.convertToViewData(firstItem))
 
                     exchangeRates.rates.forEach { currencyRate ->
                         if (currencyRate.code != firstItem.code) {
-                            val currencyViewData = CurrencyViewData(
-                                currencyRate.code,
-                                "",
-                                String.format(CURRENCY_RATE_FORMAT, currencyRate.rate),
-                                0
-                            )
-
-                            add(currencyViewData)
+                            add(currencyViewDataConverter.convertToViewData(currencyRate))
                         }
                     }
                 }

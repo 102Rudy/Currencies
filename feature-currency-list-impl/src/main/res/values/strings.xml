@@ -2,4 +2,39 @@
 <resources>
     <string name="title_rates">Rates</string>
     <string name="currency_rate_hint">0</string>
+
+    <string name="currency_title_aud">Australian Dollar</string>
+    <string name="currency_title_bgn">Bulgarian Lev</string>
+    <string name="currency_title_brl">Brazilian Real</string>
+    <string name="currency_title_cad">Canadian Dollar</string>
+    <string name="currency_title_chf">Swiss Franc</string>
+    <string name="currency_title_cny">Yuan Renminbi</string>
+    <string name="currency_title_czk">Czech Koruna</string>
+    <string name="currency_title_dkk">Danish Krone</string>
+    <string name="currency_title_eur">Euro</string>
+    <string name="currency_title_gbp">Pound Sterling</string>
+    <string name="currency_title_hkd">Hong Kong Dollar</string>
+    <string name="currency_title_hrk">Kuna</string>
+    <string name="currency_title_huf">Forint</string>
+    <string name="currency_title_idr">Rupiah</string>
+    <string name="currency_title_ils">New Israeli Sheqel</string>
+    <string name="currency_title_inr">Indian Rupee</string>
+    <string name="currency_title_isk">Iceland Krona</string>
+    <string name="currency_title_jpy">Yen</string>
+    <string name="currency_title_krw">Won</string>
+    <string name="currency_title_mxn">Mexican Peso</string>
+    <string name="currency_title_myr">Malaysian Ringgit</string>
+    <string name="currency_title_nok">Norwegian Krone</string>
+    <string name="currency_title_nzd">New Zealand Dollar</string>
+    <string name="currency_title_php">Philippine Peso</string>
+    <string name="currency_title_pln">Zloty</string>
+    <string name="currency_title_ron">Romanian Leu</string>
+    <string name="currency_title_rub">Russian Ruble</string>
+    <string name="currency_title_sek">Swedish Krona</string>
+    <string name="currency_title_sgd">Singapore Dollar</string>
+    <string name="currency_title_thb">Baht</string>
+    <string name="currency_title_usd">US Dollar</string>
+    <string name="currency_title_zar">Rand</string>
+
+    <string name="currency_title_undefined">Undefined currency</string>
 </resources>

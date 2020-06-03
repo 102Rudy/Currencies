@@ -87,6 +87,7 @@ internal class CurrencyListAdapter @Inject constructor(
             currencyViewData = item
 
             binding.tvCurrencyCode.text = item.code
+            binding.tvCurrencyTitle.text = item.title
             binding.etCurrencyRate.setText(item.rate)
         }
 
