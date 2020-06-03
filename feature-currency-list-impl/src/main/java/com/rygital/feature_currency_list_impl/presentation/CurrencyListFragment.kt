@@ -16,6 +16,11 @@ import javax.inject.Inject
 internal class CurrencyListFragment : BaseFragment<CurrencyListPresenter, CurrencyListView>(),
     CurrencyListView {
 
+    companion object {
+        private const val BUNDLE_KEY_CURRENCY_CODE = "bundle_key_currency_code"
+        private const val BUNDLE_KEY_CURRENCY_VALUE = "bundle_key_currency_value"
+    }
+
     @Inject
     lateinit var adapter: CurrencyListAdapter
 
@@ -42,8 +47,27 @@ internal class CurrencyListFragment : BaseFragment<CurrencyListPresenter, Curren
             setHasFixedSize(true)
             adapter = this@CurrencyListFragment.adapter
         }
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+
+        savedInstanceState?.let {
+            val currencyCode = it.getString(BUNDLE_KEY_CURRENCY_CODE) ?: return@let
+            val value = it.getDouble(BUNDLE_KEY_CURRENCY_VALUE)
+            presenter.setInitialValues(currencyCode, value)
+        }
 
         presenter.startRatesUpdate()
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+
+        presenter.saveInstanceState { currencyCode, value ->
+            outState.putString(BUNDLE_KEY_CURRENCY_CODE, currencyCode)
+            outState.putDouble(BUNDLE_KEY_CURRENCY_VALUE, value)
+        }
     }
 
     override fun onDestroy() {
@@ -53,8 +77,10 @@ internal class CurrencyListFragment : BaseFragment<CurrencyListPresenter, Curren
         super.onDestroy()
     }
 
+    // region CurrencyListView
     override fun setItems(list: List<CurrencyViewData>, diffResult: DiffUtil.DiffResult) {
         adapter.setItems(list)
         diffResult.dispatchUpdatesTo(adapter)
     }
+    // endregion
 }

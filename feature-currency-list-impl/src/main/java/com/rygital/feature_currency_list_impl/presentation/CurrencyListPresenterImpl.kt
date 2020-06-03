@@ -70,6 +70,16 @@ internal class CurrencyListPresenterImpl @Inject constructor(
             ))
     }
 
+    // region CurrencyListPresenter
+    override fun setInitialValues(currencyCode: String, value: Double) {
+        currentCurrencyCode = currencyCode
+        currentValue = value
+    }
+
+    override fun saveInstanceState(saveCallback: (currencyCode: String, value: Double) -> Unit) {
+        saveCallback(currentCurrencyCode, currentValue)
+    }
+
     override fun startRatesUpdate() {
         addDisposable(
             Flowable.interval(0, RATES_UPDATE_INTERVAL_MILLIS, TimeUnit.MILLISECONDS)
@@ -113,4 +123,5 @@ internal class CurrencyListPresenterImpl @Inject constructor(
                 )
         )
     }
+    // endregion
 }
