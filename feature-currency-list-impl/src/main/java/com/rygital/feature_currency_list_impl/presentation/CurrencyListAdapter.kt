@@ -111,6 +111,7 @@ internal class CurrencyListAdapter @Inject constructor(
             }
 
             binding.etCurrencyRate.requestFocus()
+            binding.etCurrencyRate.setSelection(binding.etCurrencyRate.text.toString().length)
 
             currencyViewData?.let {
                 presenter.selectItem(it)
