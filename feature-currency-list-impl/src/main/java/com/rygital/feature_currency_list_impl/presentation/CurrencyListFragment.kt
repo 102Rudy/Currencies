@@ -77,8 +77,18 @@ internal class CurrencyListFragment : BaseFragment<CurrencyListPresenter, Curren
 
     // region CurrencyListView
     override fun setItems(list: List<CurrencyViewData>, diffResult: DiffUtil.DiffResult) {
+        hideShimmer()
         adapter.setItems(list)
         diffResult.dispatchUpdatesTo(adapter)
     }
     // endregion
+
+    private fun hideShimmer() {
+        binding.shimmerLayout.run {
+            if (visibility != View.GONE) {
+                hideShimmer()
+                visibility = View.GONE
+            }
+        }
+    }
 }

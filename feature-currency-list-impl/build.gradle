@@ -12,6 +12,8 @@ dependencies {
     implementation libraries.androidxCardView
     implementation libraries.androidxConstraintLayout
 
+    implementation libraries.shimmer
+
     implementation libraries.dagger
     kapt libraries.daggerCompiler
 

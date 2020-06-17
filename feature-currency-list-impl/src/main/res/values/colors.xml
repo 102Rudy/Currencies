@@ -2,4 +2,6 @@
 <resources>
     <!-- todo update color from figma -->
     <color name="colorEditTextTint">@color/colorSecondaryText</color>
+
+    <color name="colorShimmer">#dddddd</color>
 </resources>
