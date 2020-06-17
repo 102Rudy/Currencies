@@ -19,11 +19,12 @@ abstract class BasePresenterImpl<T : MvpView> : BasePresenter<T> {
     @CallSuper
     override fun detachView() {
         view = null
+        compositeDisposable.clear()
     }
 
     @CallSuper
     override fun destroy() {
-        compositeDisposable.clear()
+        compositeDisposable.dispose()
     }
 
     protected fun addDisposable(disposable: Disposable) {
