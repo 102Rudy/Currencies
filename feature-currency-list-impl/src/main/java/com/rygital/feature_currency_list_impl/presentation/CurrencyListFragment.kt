@@ -57,8 +57,6 @@ internal class CurrencyListFragment : BaseFragment<CurrencyListPresenter, Curren
             val value = it.getDouble(BUNDLE_KEY_CURRENCY_VALUE)
             presenter.setInitialValues(currencyCode, value)
         }
-
-        presenter.startRatesUpdate()
     }
 
     override fun onSaveInstanceState(outState: Bundle) {

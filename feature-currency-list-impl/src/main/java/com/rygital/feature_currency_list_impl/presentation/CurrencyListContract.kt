@@ -12,7 +12,6 @@ internal interface CurrencyListView : MvpView {
 internal interface CurrencyListPresenter : BasePresenter<CurrencyListView> {
     fun setInitialValues(currencyCode: String, value: Double)
     fun saveInstanceState(saveCallback: (currencyCode: String, value: Double) -> Unit)
-    fun startRatesUpdate()
     fun selectItem(item: CurrencyViewData)
     fun setRate(item: CurrencyViewData, newRate: String)
 }

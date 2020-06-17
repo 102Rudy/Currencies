@@ -18,6 +18,6 @@ internal class CurrencyRepositoryImpl @Inject constructor(
                 val rates = currencyLatestResponse.rates.entries
                     .map { CurrencyRateModel(it.key, it.value) }
 
-                ExchangeRatesModel(baseCurrencyRate, rates.take(6))
+                ExchangeRatesModel(baseCurrencyRate, rates)
             }
 }

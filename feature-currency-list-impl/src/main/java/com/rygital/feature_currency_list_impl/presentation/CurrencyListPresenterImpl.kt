@@ -9,6 +9,7 @@ import com.rygital.feature_currency_list_impl.domain.model.ExchangeRatesModel
 import com.rygital.feature_currency_list_impl.presentation.viewdata.CurrencyViewData
 import io.reactivex.rxjava3.core.Flowable
 import io.reactivex.rxjava3.subjects.BehaviorSubject
+import timber.log.Timber
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
@@ -23,7 +24,7 @@ internal class CurrencyListPresenterImpl @Inject constructor(
         private const val ZERO_CURRENCY_VALUE = 0.0
 
         private const val DEFAULT_CURRENCY_CODE = "EUR"
-        private const val RATES_UPDATE_INTERVAL_MILLIS = 10000L
+        private const val RATES_UPDATE_INTERVAL_MILLIS = 1000L
     }
 
     private val exchangeRatesSubject: BehaviorSubject<ExchangeRatesModel> = BehaviorSubject.create()
@@ -31,15 +32,18 @@ internal class CurrencyListPresenterImpl @Inject constructor(
     private var currentCurrencyCode = DEFAULT_CURRENCY_CODE
     private var currentValue = DEFAULT_CURRENCY_VALUE
 
+    private var currentViewDataList: List<CurrencyViewData> = emptyList()
+
     override fun attachView(view: CurrencyListView) {
         super.attachView(view)
 
         val initialListAndDiffResult: Pair<List<CurrencyViewData>, DiffUtil.DiffResult?> =
-            emptyList<CurrencyViewData>() to null
+            currentViewDataList to null
 
-        addDisposable(exchangeRatesSubject
-            .subscribeOn(schedulerProvider.io())
-            .observeOn(schedulerProvider.computation())
+        addDisposable(
+            exchangeRatesSubject
+                .subscribeOn(schedulerProvider.io())
+                .observeOn(schedulerProvider.computation())
             .map { exchangeRates ->
                 val firstItem = CurrencyRateModel(
                     exchangeRates.baseCurrencyRate.code,
@@ -60,6 +64,8 @@ internal class CurrencyListPresenterImpl @Inject constructor(
                 val diffUtilCallback = CurrenciesDiffUtilCallback(prev.first, next)
                 val diffResult: DiffUtil.DiffResult = DiffUtil.calculateDiff(diffUtilCallback)
 
+                currentViewDataList = next
+
                 return@scan next to diffResult
             }
             .skip(1)
@@ -68,19 +74,11 @@ internal class CurrencyListPresenterImpl @Inject constructor(
                 { (items, diffResult) -> this.view?.setItems(items, diffResult!!) },
                 { throwable -> throwable.printStackTrace() }
             ))
+
+        startRatesUpdate()
     }
 
-    // region CurrencyListPresenter
-    override fun setInitialValues(currencyCode: String, value: Double) {
-        currentCurrencyCode = currencyCode
-        currentValue = value
-    }
-
-    override fun saveInstanceState(saveCallback: (currencyCode: String, value: Double) -> Unit) {
-        saveCallback(currentCurrencyCode, currentValue)
-    }
-
-    override fun startRatesUpdate() {
+    private fun startRatesUpdate() {
         addDisposable(
             Flowable.interval(0, RATES_UPDATE_INTERVAL_MILLIS, TimeUnit.MILLISECONDS)
                 .subscribeOn(schedulerProvider.io())
@@ -92,6 +90,17 @@ internal class CurrencyListPresenterImpl @Inject constructor(
                     { throwable -> throwable.printStackTrace() }
                 )
         )
+    }
+
+    // region CurrencyListPresenter
+    override fun setInitialValues(currencyCode: String, value: Double) {
+        Timber.i("ZZZ setInitialValues: code: $currencyCode, value: $value")
+        currentCurrencyCode = currencyCode
+        currentValue = value
+    }
+
+    override fun saveInstanceState(saveCallback: (currencyCode: String, value: Double) -> Unit) {
+        saveCallback(currentCurrencyCode, currentValue)
     }
 
     override fun selectItem(item: CurrencyViewData) {
