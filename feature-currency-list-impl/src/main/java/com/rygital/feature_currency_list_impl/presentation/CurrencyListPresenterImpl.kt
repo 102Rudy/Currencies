@@ -23,7 +23,7 @@ internal class CurrencyListPresenterImpl @Inject constructor(
         private const val ZERO_CURRENCY_VALUE = 0.0
 
         private const val DEFAULT_CURRENCY_CODE = "EUR"
-        private const val RATES_UPDATE_INTERVAL_MILLIS = 5000L
+        private const val RATES_UPDATE_INTERVAL_MILLIS = 1000L
     }
 
     private val exchangeRatesSubject: BehaviorSubject<ExchangeRatesModel> = BehaviorSubject.create()
