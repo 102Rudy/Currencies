@@ -9,7 +9,6 @@ import com.rygital.feature_currency_list_impl.domain.model.ExchangeRatesModel
 import com.rygital.feature_currency_list_impl.presentation.viewdata.CurrencyViewData
 import io.reactivex.rxjava3.core.Flowable
 import io.reactivex.rxjava3.subjects.BehaviorSubject
-import timber.log.Timber
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
@@ -24,7 +23,7 @@ internal class CurrencyListPresenterImpl @Inject constructor(
         private const val ZERO_CURRENCY_VALUE = 0.0
 
         private const val DEFAULT_CURRENCY_CODE = "EUR"
-        private const val RATES_UPDATE_INTERVAL_MILLIS = 1000L
+        private const val RATES_UPDATE_INTERVAL_MILLIS = 5000L
     }
 
     private val exchangeRatesSubject: BehaviorSubject<ExchangeRatesModel> = BehaviorSubject.create()
@@ -94,7 +93,6 @@ internal class CurrencyListPresenterImpl @Inject constructor(
 
     // region CurrencyListPresenter
     override fun setInitialValues(currencyCode: String, value: Double) {
-        Timber.i("ZZZ setInitialValues: code: $currencyCode, value: $value")
         currentCurrencyCode = currencyCode
         currentValue = value
     }
@@ -120,6 +118,10 @@ internal class CurrencyListPresenterImpl @Inject constructor(
             }
 
         updateRatesRelativeToCurrent()
+    }
+
+    override fun clearCachedItems() {
+        currentViewDataList = emptyList()
     }
 
     private fun updateRatesRelativeToCurrent() {

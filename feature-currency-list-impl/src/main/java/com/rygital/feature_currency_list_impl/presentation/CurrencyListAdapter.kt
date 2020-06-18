@@ -13,7 +13,7 @@ internal class CurrencyListAdapter @Inject constructor(
     private val presenter: CurrencyListPresenter
 ) : RecyclerView.Adapter<CurrencyListAdapter.CurrencyHolder>() {
 
-    private val items: MutableList<CurrencyViewData> = mutableListOf()
+    private var items: List<CurrencyViewData> = listOf()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CurrencyHolder =
         CurrencyHolder(
@@ -43,8 +43,7 @@ internal class CurrencyListAdapter @Inject constructor(
     override fun getItemCount(): Int = items.size
 
     fun setItems(newItems: List<CurrencyViewData>) {
-        items.clear()
-        items.addAll(newItems)
+        items = newItems
     }
 
     inner class CurrencyHolder(

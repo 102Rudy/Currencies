@@ -14,4 +14,5 @@ internal interface CurrencyListPresenter : BasePresenter<CurrencyListView> {
     fun saveInstanceState(saveCallback: (currencyCode: String, value: Double) -> Unit)
     fun selectItem(item: CurrencyViewData)
     fun setRate(item: CurrencyViewData, newRate: String)
+    fun clearCachedItems()
 }

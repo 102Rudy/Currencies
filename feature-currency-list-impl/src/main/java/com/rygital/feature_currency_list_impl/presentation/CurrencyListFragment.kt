@@ -68,6 +68,12 @@ internal class CurrencyListFragment : BaseFragment<CurrencyListPresenter, Curren
         }
     }
 
+    override fun onDestroyView() {
+        presenter.clearCachedItems()
+        binding.rvCurrencyList.adapter = null
+        super.onDestroyView()
+    }
+
     override fun onDestroy() {
         if (requireActivity().isFinishing) {
             CurrencyListScreenComponent.clearComponent()
