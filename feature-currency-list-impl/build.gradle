@@ -13,6 +13,7 @@ dependencies {
     implementation libraries.androidxConstraintLayout
 
     implementation libraries.shimmer
+    implementation libraries.circleImageView
 
     implementation libraries.dagger
     kapt libraries.daggerCompiler

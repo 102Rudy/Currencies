@@ -88,6 +88,7 @@ internal class CurrencyListAdapter @Inject constructor(
             binding.tvCurrencyCode.text = item.code
             binding.tvCurrencyTitle.text = item.title
             binding.etCurrencyRate.setText(item.rate)
+            binding.ivIcon.setImageResource(item.icon)
         }
 
         fun bind(item: CurrencyViewData, payloads: MutableList<Any>) {
