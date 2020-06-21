@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.google.android.material.appbar.AppBarLayout
+    <com.rygital.feature_currency_list_impl.presentation.utils.AutoElevationAppBarLayout
         android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -18,7 +18,7 @@
             android:layout_height="?android:attr/actionBarSize"
             app:contentInsetStart="72dp" />
 
-    </com.google.android.material.appbar.AppBarLayout>
+    </com.rygital.feature_currency_list_impl.presentation.utils.AutoElevationAppBarLayout>
 
     <FrameLayout
         android:layout_width="match_parent"
