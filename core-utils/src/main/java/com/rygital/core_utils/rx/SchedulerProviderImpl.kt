@@ -1,4 +1,4 @@
-package com.rygital.core.rx
+package com.rygital.core_utils.rx
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Scheduler

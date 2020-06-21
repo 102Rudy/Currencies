@@ -1,10 +1,10 @@
 package com.rygital.currencies
 
 import android.content.Context
-import com.rygital.core.ApplicationContext
-import com.rygital.core.ComponentFactory
-import com.rygital.core.CoreApi
-import com.rygital.core.DaggerCoreComponent
+import com.rygital.core_utils.ApplicationContext
+import com.rygital.core_utils.ComponentFactory
+import com.rygital.core_utils.CoreApi
+import com.rygital.core_utils.DaggerCoreComponent
 import com.rygital.core_network_api.NetworkApi
 import com.rygital.core_network_impl.DaggerNetworkComponent
 import com.rygital.feature_currency_list_api.CurrencyListApi

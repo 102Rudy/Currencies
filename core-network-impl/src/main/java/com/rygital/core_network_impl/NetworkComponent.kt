@@ -2,7 +2,7 @@ package com.rygital.core_network_impl
 
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
-import com.rygital.core.scope.ApplicationScope
+import com.rygital.core_utils.scope.ApplicationScope
 import com.rygital.core_network_api.NetworkApi
 import dagger.Component
 import dagger.Module

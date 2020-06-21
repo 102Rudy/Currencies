@@ -1,9 +1,9 @@
 package com.rygital.feature_currency_list_impl.di
 
-import com.rygital.core.BaseInjector
-import com.rygital.core.CoreApi
-import com.rygital.core.componentFactory
-import com.rygital.core.scope.ScreenScope
+import com.rygital.core_utils.BaseInjector
+import com.rygital.core_utils.CoreApi
+import com.rygital.core_utils.componentFactory
+import com.rygital.core_utils.scope.ScreenScope
 import com.rygital.core_network_api.NetworkApi
 import com.rygital.feature_currency_list_impl.data.CurrencyRepositoryImpl
 import com.rygital.feature_currency_list_impl.data.CurrencyService

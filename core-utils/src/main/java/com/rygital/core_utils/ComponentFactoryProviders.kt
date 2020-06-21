@@ -1,4 +1,4 @@
-package com.rygital.core
+package com.rygital.core_utils
 
 import android.app.Service
 import androidx.fragment.app.Fragment

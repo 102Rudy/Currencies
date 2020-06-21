@@ -1,7 +1,7 @@
 package com.rygital.feature_currency_list_impl.presentation
 
 import androidx.recyclerview.widget.DiffUtil
-import com.rygital.core.rx.SchedulerProvider
+import com.rygital.core_utils.rx.SchedulerProvider
 import com.rygital.core_ui.BasePresenterImpl
 import com.rygital.feature_currency_list_impl.domain.CurrencyInteractor
 import com.rygital.feature_currency_list_impl.domain.model.CurrencyRateModel

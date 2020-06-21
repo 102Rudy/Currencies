@@ -2,7 +2,7 @@ package com.rygital.currencies.presentation
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.rygital.core.componentFactory
+import com.rygital.core_utils.componentFactory
 import com.rygital.currencies.R
 import com.rygital.feature_currency_list_api.CurrencyListApi
 

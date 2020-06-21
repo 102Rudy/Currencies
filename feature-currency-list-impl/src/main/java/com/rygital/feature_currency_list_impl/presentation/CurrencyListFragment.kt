@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.rygital.core.setVisibleOrGone
+import com.rygital.core_utils.setVisibleOrGone
 import com.rygital.core_ui.BaseFragment
 import com.rygital.feature_currency_list_impl.R
 import com.rygital.feature_currency_list_impl.databinding.FragmentCurrencyListBinding

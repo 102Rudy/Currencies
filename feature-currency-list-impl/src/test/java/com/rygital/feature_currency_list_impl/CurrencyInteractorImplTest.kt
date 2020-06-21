@@ -2,7 +2,7 @@ package com.rygital.feature_currency_list_impl
 
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.whenever
-import com.rygital.core.rx.SchedulerProvider
+import com.rygital.core_utils.rx.SchedulerProvider
 import com.rygital.feature_currency_list_impl.domain.CurrencyInteractorImpl
 import com.rygital.feature_currency_list_impl.domain.CurrencyRepository
 import com.rygital.feature_currency_list_impl.domain.model.CurrencyRateModel

@@ -1,7 +1,7 @@
 package com.rygital.feature_currency_list_impl.domain
 
 import androidx.annotation.VisibleForTesting
-import com.rygital.core.rx.SchedulerProvider
+import com.rygital.core_utils.rx.SchedulerProvider
 import com.rygital.feature_currency_list_impl.domain.model.CurrencyRateModel
 import com.rygital.feature_currency_list_impl.domain.model.ExchangeRatesModel
 import io.reactivex.rxjava3.core.Single

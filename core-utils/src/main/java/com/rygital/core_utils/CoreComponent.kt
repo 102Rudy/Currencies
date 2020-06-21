@@ -1,9 +1,9 @@
-package com.rygital.core
+package com.rygital.core_utils
 
 import android.content.Context
-import com.rygital.core.rx.SchedulerProvider
-import com.rygital.core.rx.SchedulerProviderImpl
-import com.rygital.core.scope.ApplicationScope
+import com.rygital.core_utils.rx.SchedulerProvider
+import com.rygital.core_utils.rx.SchedulerProviderImpl
+import com.rygital.core_utils.scope.ApplicationScope
 import dagger.Binds
 import dagger.BindsInstance
 import dagger.Component

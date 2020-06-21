@@ -1,6 +1,6 @@
-package com.rygital.core
+package com.rygital.core_utils
 
-import com.rygital.core.rx.SchedulerProvider
+import com.rygital.core_utils.rx.SchedulerProvider
 
 interface CoreApi {
     fun schedulerProvider(): SchedulerProvider

@@ -1,6 +1,6 @@
 package com.rygital.feature_currency_list_impl.utils
 
-import com.rygital.core.rx.SchedulerProvider
+import com.rygital.core_utils.rx.SchedulerProvider
 import io.reactivex.rxjava3.core.Scheduler
 import io.reactivex.rxjava3.schedulers.Schedulers
 

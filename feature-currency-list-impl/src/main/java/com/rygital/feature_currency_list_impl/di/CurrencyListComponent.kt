@@ -1,6 +1,6 @@
 package com.rygital.feature_currency_list_impl.di
 
-import com.rygital.core.scope.FeatureScope
+import com.rygital.core_utils.scope.FeatureScope
 import com.rygital.feature_currency_list_api.CurrencyListApi
 import com.rygital.feature_currency_list_api.CurrencyListStarter
 import com.rygital.feature_currency_list_impl.CurrencyListStarterImpl

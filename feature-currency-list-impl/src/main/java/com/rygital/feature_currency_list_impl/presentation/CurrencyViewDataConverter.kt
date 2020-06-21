@@ -1,7 +1,7 @@
 package com.rygital.feature_currency_list_impl.presentation
 
 import androidx.annotation.DrawableRes
-import com.rygital.core.ResourceProvider
+import com.rygital.core_utils.ResourceProvider
 import com.rygital.feature_currency_list_impl.R
 import com.rygital.feature_currency_list_impl.domain.model.CurrencyRateModel
 import com.rygital.feature_currency_list_impl.presentation.viewdata.CurrencyViewData

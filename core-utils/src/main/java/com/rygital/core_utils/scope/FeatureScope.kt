@@ -1,4 +1,4 @@
-package com.rygital.core.scope
+package com.rygital.core_utils.scope
 
 import javax.inject.Scope
 

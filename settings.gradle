@@ -1,8 +1,8 @@
 rootProject.name = 'Currencies'
-include ':app'
-include ':core'
-include ':core-network-api'
-include ':core-network-impl'
-include ':feature-currency-list-api'
-include ':feature-currency-list-impl'
-include ':core-ui'
+include ':app',
+    ':core-utils',
+    ':core-ui',
+    ':core-network-api',
+    ':core-network-impl',
+    ':feature-currency-list-api',
+    ':feature-currency-list-impl'
