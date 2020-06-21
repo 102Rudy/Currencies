@@ -1,0 +1,12 @@
+apply from: "${rootProject.projectDir}/common.gradle"
+
+dependencies {
+    implementation libraries.androidxDesign
+    implementation libraries.androidxCardView
+    implementation libraries.androidxConstraintLayout
+
+    implementation project(':core-utils')
+
+    implementation libraries.dagger
+    kapt libraries.daggerCompiler
+}

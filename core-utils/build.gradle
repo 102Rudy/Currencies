@@ -1,0 +1,19 @@
+apply from: "${rootProject.projectDir}/common.gradle"
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    api libraries.kotlin
+
+    api libraries.androidxDesign
+
+    // rx
+    api libraries.rxJava
+    api libraries.rxAndroid
+
+    api libraries.dagger
+    kapt libraries.daggerCompiler
+
+    // developer tools
+    api libraries.timber
+}
