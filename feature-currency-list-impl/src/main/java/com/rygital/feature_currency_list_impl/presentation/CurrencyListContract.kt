@@ -7,10 +7,14 @@ import com.rygital.feature_currency_list_impl.presentation.viewdata.CurrencyView
 
 internal interface CurrencyListView : MvpView {
     fun setItems(list: List<CurrencyViewData>, diffResult: DiffUtil.DiffResult)
+    fun hideItems()
+    fun setShimmerVisibility(isVisible: Boolean)
+    fun setErrorVisibility(isVisible: Boolean)
 }
 
 internal interface CurrencyListPresenter : BasePresenter<CurrencyListView> {
     fun setInitialValues(currencyCode: String, value: Double)
+    fun onBtnTryAgainClick()
     fun saveInstanceState(saveCallback: (currencyCode: String, value: Double) -> Unit)
     fun selectItem(item: CurrencyViewData)
     fun setRate(item: CurrencyViewData, newRate: String)

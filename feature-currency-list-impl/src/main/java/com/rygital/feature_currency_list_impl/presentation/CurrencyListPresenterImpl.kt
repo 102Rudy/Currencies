@@ -8,9 +8,20 @@ import com.rygital.feature_currency_list_impl.domain.model.CurrencyRateModel
 import com.rygital.feature_currency_list_impl.domain.model.ExchangeRatesModel
 import com.rygital.feature_currency_list_impl.presentation.viewdata.CurrencyViewData
 import io.reactivex.rxjava3.core.Flowable
+import io.reactivex.rxjava3.core.Notification
+import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.subjects.BehaviorSubject
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
+
+private sealed class UiResult {
+    class ListAndDiff(
+        val currencyViewDataList: List<CurrencyViewData>,
+        val diffResult: DiffUtil.DiffResult?
+    ) : UiResult()
+
+    object Error : UiResult()
+}
 
 internal class CurrencyListPresenterImpl @Inject constructor(
     private val schedulerProvider: SchedulerProvider,
@@ -26,7 +37,8 @@ internal class CurrencyListPresenterImpl @Inject constructor(
         private const val RATES_UPDATE_INTERVAL_MILLIS = 1000L
     }
 
-    private val exchangeRatesSubject: BehaviorSubject<ExchangeRatesModel> = BehaviorSubject.create()
+    private val exchangeRatesSubject: BehaviorSubject<Notification<ExchangeRatesModel>> =
+        BehaviorSubject.create()
 
     private var currentCurrencyCode = DEFAULT_CURRENCY_CODE
     private var currentValue = DEFAULT_CURRENCY_VALUE
@@ -36,13 +48,33 @@ internal class CurrencyListPresenterImpl @Inject constructor(
     override fun attachView(view: CurrencyListView) {
         super.attachView(view)
 
-        val initialListAndDiffResult: Pair<List<CurrencyViewData>, DiffUtil.DiffResult?> =
-            currentViewDataList to null
-
         addDisposable(
             exchangeRatesSubject
                 .subscribeOn(schedulerProvider.io())
-                .observeOn(schedulerProvider.computation())
+                .concatMap { notification ->
+                    if (notification.isOnNext) {
+                        convertToListAndDiff(notification.value)
+                    } else {
+                        Observable.just(UiResult.Error)
+                    }
+                }
+                .observeOn(schedulerProvider.ui())
+                .subscribe(
+                    { result ->
+                        when (result) {
+                            is UiResult.ListAndDiff -> displayCurrencyList(result)
+                            is UiResult.Error -> displayError()
+                        }
+                    },
+                    { it.printStackTrace() }
+                ))
+
+        startRatesUpdate()
+    }
+
+    private fun convertToListAndDiff(rates: ExchangeRatesModel): Observable<UiResult.ListAndDiff> =
+        Observable.just(rates)
+            .subscribeOn(schedulerProvider.computation())
             .map { exchangeRates ->
                 val firstItem = CurrencyRateModel(
                     exchangeRates.baseCurrencyRate.code,
@@ -59,22 +91,34 @@ internal class CurrencyListPresenterImpl @Inject constructor(
                     }
                 }
             }
-            .scan(initialListAndDiffResult) { prev, next ->
-                val diffUtilCallback = CurrenciesDiffUtilCallback(prev.first, next)
+            .scan(UiResult.ListAndDiff(currentViewDataList, null)) { prev, next ->
+                val diffUtilCallback = CurrenciesDiffUtilCallback(prev.currencyViewDataList, next)
                 val diffResult: DiffUtil.DiffResult = DiffUtil.calculateDiff(diffUtilCallback)
 
                 currentViewDataList = next
 
-                return@scan next to diffResult
+                return@scan UiResult.ListAndDiff(next, diffResult)
             }
             .skip(1)
-            .observeOn(schedulerProvider.ui())
-            .subscribe(
-                { (items, diffResult) -> this.view?.setItems(items, diffResult!!) },
-                { throwable -> throwable.printStackTrace() }
-            ))
 
-        startRatesUpdate()
+    private fun displayCurrencyList(listAndDiff: UiResult.ListAndDiff) {
+        listAndDiff.diffResult ?: throw IllegalStateException("diffResult can not be null here")
+
+        view?.run {
+            setShimmerVisibility(false)
+            setErrorVisibility(false)
+            setItems(listAndDiff.currencyViewDataList, listAndDiff.diffResult)
+        }
+    }
+
+    private fun displayError() {
+        view?.run {
+            hideItems()
+            clearCachedItems()
+
+            setShimmerVisibility(false)
+            setErrorVisibility(true)
+        }
     }
 
     private fun startRatesUpdate() {
@@ -84,9 +128,10 @@ internal class CurrencyListPresenterImpl @Inject constructor(
                 .flatMap {
                     currencyInteractor.getRates(currentCurrencyCode, currentValue).toFlowable()
                 }
+                .materialize()
                 .subscribe(
                     { items -> exchangeRatesSubject.onNext(items) },
-                    { throwable -> throwable.printStackTrace() }
+                    exchangeRatesSubject::onError
                 )
         )
     }
@@ -95,6 +140,10 @@ internal class CurrencyListPresenterImpl @Inject constructor(
     override fun setInitialValues(currencyCode: String, value: Double) {
         currentCurrencyCode = currencyCode
         currentValue = value
+    }
+
+    override fun onBtnTryAgainClick() {
+        startRatesUpdate()
     }
 
     override fun saveInstanceState(saveCallback: (currencyCode: String, value: Double) -> Unit) {
@@ -128,9 +177,10 @@ internal class CurrencyListPresenterImpl @Inject constructor(
         addDisposable(
             currencyInteractor.getRatesRelativeToBase(currentCurrencyCode, currentValue)
                 .subscribeOn(schedulerProvider.io())
+                .materialize()
                 .subscribe(
                     { items -> exchangeRatesSubject.onNext(items) },
-                    { throwable -> throwable.printStackTrace() }
+                    exchangeRatesSubject::onError
                 )
         )
     }

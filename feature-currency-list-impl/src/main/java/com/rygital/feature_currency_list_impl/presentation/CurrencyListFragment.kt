@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.rygital.core.setVisibleOrGone
 import com.rygital.core_ui.BaseFragment
 import com.rygital.feature_currency_list_impl.R
 import com.rygital.feature_currency_list_impl.databinding.FragmentCurrencyListBinding
@@ -47,6 +48,10 @@ internal class CurrencyListFragment : BaseFragment<CurrencyListPresenter, Curren
             setHasFixedSize(true)
             adapter = this@CurrencyListFragment.adapter
         }
+
+        binding.errorState.btnTryAgain.setOnClickListener {
+            presenter.onBtnTryAgainClick()
+        }
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -83,18 +88,31 @@ internal class CurrencyListFragment : BaseFragment<CurrencyListPresenter, Curren
 
     // region CurrencyListView
     override fun setItems(list: List<CurrencyViewData>, diffResult: DiffUtil.DiffResult) {
-        hideShimmer()
+        binding.rvCurrencyList.setVisibleOrGone(true)
         adapter.setItems(list)
         diffResult.dispatchUpdatesTo(adapter)
     }
-    // endregion
 
-    private fun hideShimmer() {
-        binding.shimmerLayout.run {
-            if (visibility != View.GONE) {
+    override fun hideItems() {
+        adapter.setItems(emptyList())
+        adapter.notifyDataSetChanged()
+        binding.rvCurrencyList.setVisibleOrGone(false)
+    }
+
+    override fun setShimmerVisibility(isVisible: Boolean) {
+        binding.shimmerLayout.root.run {
+            if (isVisible) {
+                showShimmer(true)
+            } else {
                 hideShimmer()
-                visibility = View.GONE
             }
+
+            setVisibleOrGone(isVisible)
         }
     }
+
+    override fun setErrorVisibility(isVisible: Boolean) {
+        binding.errorState.root.setVisibleOrGone(isVisible)
+    }
+    // endregion
 }

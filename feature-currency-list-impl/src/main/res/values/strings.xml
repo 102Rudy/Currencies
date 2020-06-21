@@ -2,6 +2,8 @@
 <resources>
     <string name="title_rates">Rates</string>
     <string name="currency_rate_hint">0</string>
+    <string name="error_state_title">Something went wrong.\nPlease try again</string>
+    <string name="error_state_button_try_again">Try again</string>
 
     <string name="currency_title_aud">Australian Dollar</string>
     <string name="currency_title_bgn">Bulgarian Lev</string>
