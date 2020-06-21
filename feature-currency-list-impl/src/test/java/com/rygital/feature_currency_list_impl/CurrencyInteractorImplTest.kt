@@ -78,7 +78,8 @@ class CurrencyInteractorImplTest {
         observer.assertValue(
             createExchangeRatesModel(
                 "BGN",
-                2.0
+                2.0,
+                baseCurrencyValue = 2.0
             )
         )
         observer.assertComplete()

@@ -8,10 +8,11 @@ import kotlin.test.assertNotEquals
 
 internal fun createExchangeRatesModel(
     baseCurrency: String,
-    valueMultiplier: Double = 1.0
+    valueMultiplier: Double = 1.0,
+    baseCurrencyValue: Double = 1.0
 ): ExchangeRatesModel =
     ExchangeRatesModel(
-        CurrencyRateModel(baseCurrency, 1.0),
+        CurrencyRateModel(baseCurrency, baseCurrencyValue),
         listOf(
             CurrencyRateModel("AUD", 1.0 * valueMultiplier),
             CurrencyRateModel("BGN", 2.0 * valueMultiplier),
