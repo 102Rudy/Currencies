@@ -11,3 +11,4 @@ Test project that uses Revolut's currency API. Implemented with Clean Architectu
 - Add Unit/UI tests
 - Add analytics
 - Use BigDecimal instead of Double for currency rates
+- Add better navigation
